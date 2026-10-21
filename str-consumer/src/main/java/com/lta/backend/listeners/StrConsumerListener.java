@@ -9,6 +9,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import com.lta.backend.services.OrderProcessor;
+import com.lta.backend.services.clientes;
 
 @Log4j2
 @Component
@@ -19,6 +20,18 @@ public class StrConsumerListener {
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    private clientes clientesService;
+
+    @KafkaListener(groupId = "group-query",
+            topics = "clientes-query-topic",
+            containerFactory = "validMessageContainerFactory")
+    public void listenerClientes(String message){
+        log.info("LISTENER_CLIENTES ::: consulta recibida {}", message);
+        String resultado = clientesService.consultar(message);
+        kafkaTemplate.send("str-topic-response", resultado);
+    }
 
     // Listener que pertenece al grupo "group-1"
     // Solo consume mensajes de la partición 0 del tópico "str-topic"

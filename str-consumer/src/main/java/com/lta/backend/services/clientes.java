@@ -1,6 +1,9 @@
 package com.lta.backend.services;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,4 +32,16 @@ public class clientes {
 
         return response;
     }
+
+    public String consultar(String id) {
+        Map<String, String> datos = Map.of(
+            "1", "Cliente 1: Ana López, ana@correo.com",
+            "2", "Cliente 2: Luis Pérez, luis@correo.com",
+            "3", "Cliente 3: María Ruiz, maria@correo.com"
+        );
+        String resultado = datos.getOrDefault(id.trim(), "Cliente no encontrado: " + id);
+        log.info("Consulta cliente {} -> {}", id, resultado);
+        return resultado;
+    }
+
 }
