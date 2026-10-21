@@ -32,6 +32,17 @@ public class StringProducerService {
             log.info("Particion {}, Offset {}", result.getRecordMetadata().partition(),result.getRecordMetadata().offset());
         });
     }
+
+    public void sendClientes(String message){
+        kafkaTemplate.send("clientes-query-topic", message).whenComplete((result, ex) -> {
+            if(ex != null){
+                log.error("Error al enviar la consulta de cliente: {}", ex.getMessage());
+                return;
+            }
+            log.info("Consulta de cliente enviada: {}", result.getProducerRecord().value());
+            log.info("Particion {}, Offset {}", result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
+        });
+    }
 }
 
 

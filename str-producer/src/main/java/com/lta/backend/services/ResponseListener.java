@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 public class ResponseListener {
 
     public static String response = null;
-
+    public static volatile String response = null;
+    
     @KafkaListener(topics = "str-topic-response", groupId = "group-1")
     public void listen(String message){
         response = message;
